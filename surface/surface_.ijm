@@ -13,7 +13,7 @@
 //   specify the ratio of testing window to the image
 //   specify, if default surface is first image or last image. If the very top of the object is missing, select "first"
 
-macro "Extract surface & interior - Cf00O11ee" {
+macro "Extract surface & interior Action Tool - Cf00O11ee" {
 
 //INPUT: Load XYZC hyperstack (e.g. nd5 file)
 outdir=getDirectory("image");
