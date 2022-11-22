@@ -1,7 +1,35 @@
+######################################
+#  EXTRACT SURFACE & INTERIOR MACRO  #
+######################################
+
 This ImageJ macro processes an active XYZC hyperstack from a confocal microscope and extracts the surface and internal signal for better visualization and representation of substructures.
 
 The algorithm traverses the image column by column and row by row in a square grid with a size that can be determined as a fraction of the total image size. For each rectangle, the signal intensity along the axis (Z-axis profile) is computed and the resulting profile is numerically derived to determine the location of the inflection point of increasing intensity, which corresponds to the surface of the structure.
 
-Installation & use:
-Download the surface_.ijm file to any folder and install it from the ImageJ environment via the command "Plugins > Macros > Install..."
+INSTALLATION & USE
+##################
+
+1) Download the surface_.ijm file to any folder and install it from the ImageJ environment via the command "Plugins > Macros > Install..."
 A new tool will appear in the menu, the red circle.
+
+2) Load XYZC hyperstack, e. g. nd2 file from confocal microscope
+3) Click the macro Active Tool (red circle)
+4) Select options in dialog:
+   - a base delimiter is used for extraction of the base part of the analyzed image name, e.g. from the image title "StackO1_ch405/ch488/ch515", the part "StackO1" will be extracted by using "_" character.
+   - select a channel, whcich will be used for a surface detection. Only one channel will analysed, the others are only used for extractio. Use channel, where a visualisation of the surface is the best.
+   - specify, how many slices will be extracted as a surface layer before and after the detected surface.
+   - specify the ratio of testing window to the total image.
+   - specify, if the default surface will be in the first image or in the last. If the very top of the object is missing, select "first".
+  
+HOW TO CITE
+###########
+
+Cite by link to this repository:
+https://github.com/vosolsob/ImageJ_macros/edit/main/surface
+
+CONTACT
+#######
+
+Stanislav Vosolsobě
+vosolsob@natur.cuni.cz
+
