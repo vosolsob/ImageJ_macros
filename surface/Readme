@@ -1,1 +1,7 @@
-This ImageJ macro use opened 
+This ImageJ macro processes an active XYZC hyperstack from a confocal microscope and extracts the surface and internal signal for better visualization and representation of substructures.
+
+The algorithm traverses the image column by column and row by row in a square grid with a size that can be determined as a fraction of the total image size. For each rectangle, the signal intensity along the axis (Z-axis profile) is computed and the resulting profile is numerically derived to determine the location of the inflection point of increasing intensity, which corresponds to the surface of the structure.
+
+Installation & use:
+Download the surface_.ijm file to any folder and install it from the ImageJ environment via the command "Plugins > Macros > Install..."
+A new tool will appear in the menu, the red circle.
