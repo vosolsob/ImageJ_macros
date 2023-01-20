@@ -26,6 +26,7 @@ items = newArray(nc);
 for (i = 0; i < nc; i++) {
 	items[i]= toString(i+1, 0);
 }
+//CHANGE DEFAULT VALUES HERE:
 //Base name delimiter to extract title for image saving
 Dialog.addString("Base name delimiter", "_");
 //Select channel in witch the surface detection will be performed
@@ -34,8 +35,12 @@ Dialog.addRadioButtonGroup("Channel for surface detection", items, nc, 1, 1);
 Dialog.addNumber("Before surface", 3, 0, 5, "images");
 Dialog.addNumber("After surface", 3, 0, 5, "images");
 Dialog.addNumber("Testing window size", 0.01, 2, 5, "of image size");
+Dialog.addNumber("Surface detection tolerance", 10, 0, 5, "pixel intensity");
 defsur=newArray("first","last");
 Dialog.addRadioButtonGroup("Default surface", defsur, nc, 1, "last");
+Dialog.addCheckbox("Show masks", false);
+Dialog.addCheckbox("Show interior", false);
+Dialog.addCheckbox("Auto levels in output pictures", true);
 
 Dialog.show;
 //Base name delimiter to extract title for image saving
@@ -47,8 +52,17 @@ sb=Dialog.getNumber();
 sa=Dialog.getNumber();
 //Fraction of testing window to main window
 tw=Dialog.getNumber();
+//Surface detection tolerance
+dt=Dialog.getNumber();
 //Default surface
 selsur=Dialog.getRadioButton();
+//Show masks
+sm=Dialog.getCheckbox();
+//Extract interior
+in=Dialog.getCheckbox();
+//Auto levels
+al=Dialog.getCheckbox();
+
 
 Stack.setChannel(mch);
 print(mch);
@@ -100,7 +114,7 @@ for (i = 1; i <= mw; i++) {
 		for (s=0; s<si_grad.length; s++){
       		si_grad[s]=si[s+1]-si[s];
       		}
-		fm=Array.findMaxima(si_grad, 10);
+		fm=Array.findMaxima(si_grad, dt);
 		if(fm.length>0){
 		selectImage(imm);
 		setColor(fm[0]);
@@ -118,6 +132,19 @@ selectImage(imm);
 saveAs("tiff",outdir+it+"-mask_no_blur.tiff");
 run("Gaussian Blur...", "sigma="+ww/4);
 saveAs("tiff",outdir+it+"-mask.tiff");
+
+//Only for debugging
+//setBatchMode("exit and display");
+//iw=1200;
+//ih=1200;
+//ns=85;
+//nc=2;
+//imm=getImageID();
+//sa=3;
+//sb=3;
+//outdir="/media/standa/5A25-ED95/spinning/2022_12_08/";
+//it="ToiM6";
+//ot="ToiM6_w1sdc561.stk"
 
 
 //SURFACE
@@ -155,9 +182,18 @@ rename("4D-mask");
 close("3D-mask");
 imageCalculator("Multiply create stack", ot,"4D-mask");
 run("Z Project...", "projection=[Max Intensity]");
+ri=getImageID();
+if(al) {
+	for (c = 1; c <= nSlices; c++) {
+    setSlice(c);
+    run("Enhance Contrast", "saturated=0.20");
+	}
+}
 saveAs("Tiff", outdir+it+"-surface.tiff");
+if(!sm) close("Result *");
 close("4D-mask");
 
+if(in){
 //INTERIOR
 //Create 3D mask for selection of surface/interior regions
 newImage("3D-mask", "8-bit composite-mode", iw, ih, 1, ns, 1);
@@ -189,9 +225,18 @@ rename("4D-mask");
 close("3D-mask");
 imageCalculator("Multiply create stack", ot,"4D-mask");
 run("Z Project...", "projection=[Max Intensity]");
+if(al) {
+	for (c = 1; c <= nSlices; c++) {
+    setSlice(c);
+    run("Enhance Contrast", "saturated=0.20");
+	}
+}
 saveAs("Tiff", outdir+it+"-interior.tiff");
 close("4D-mask");
-		
+if(!sm) close("Result *");
+}
+
+if(!sm) close(it+"-mask.tiff");
 setBatchMode("exit and display");
 
 }
