@@ -78,6 +78,7 @@ if(selsur=="last"){
 }
 floodFill(1, 1);
 
+
 for (i = 1; i <= mw; i++) {
 //for (i = 300; i <= 600; i++) {
 	print(i);
@@ -121,7 +122,7 @@ saveAs("tiff",outdir+it+"-mask.tiff");
 
 //SURFACE
 //Create 3D mask for selection of surface/interior regions
-newImage("3D-mask", "8-bit composite-mode", iw, iw, 1, ns, 1);
+newImage("3D-mask", "8-bit composite-mode", iw, ih, 1, ns, 1);
 tdm=getImageID();
 for (s = 1; s <= ns; s++) {
 	selectImage(imm);
@@ -145,7 +146,11 @@ for (s = 1; s <= ns; s++) {
 	run("Paste");
 }
 run("Divide...", "value=255 stack");
-run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask create keep");
+if(nc==1) run("Merge Channels...", "c1=3D-mask create keep");
+if(nc==2) run("Merge Channels...", "c1=3D-mask c2=3D-mask create keep");
+if(nc==3) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask create keep");
+if(nc==4) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask c4=3D-mask create keep");
+if(nc==5) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask c4=3D-mask c5=3D-mask create keep");
 rename("4D-mask");
 close("3D-mask");
 imageCalculator("Multiply create stack", ot,"4D-mask");
@@ -155,7 +160,7 @@ close("4D-mask");
 
 //INTERIOR
 //Create 3D mask for selection of surface/interior regions
-newImage("3D-mask", "8-bit composite-mode", iw, iw, 1, ns, 1);
+newImage("3D-mask", "8-bit composite-mode", iw, ih, 1, ns, 1);
 tdm=getImageID();
 for (s = 1; s <= ns; s++) {
 	selectImage(imm);
@@ -175,7 +180,11 @@ for (s = 1; s <= ns; s++) {
 	run("Paste");
 }
 run("Divide...", "value=255 stack");
-run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask create keep");
+if(nc==1) run("Merge Channels...", "c1=3D-mask create keep");
+if(nc==2) run("Merge Channels...", "c1=3D-mask c2=3D-mask create keep");
+if(nc==3) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask create keep");
+if(nc==4) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask c4=3D-mask create keep");
+if(nc==5) run("Merge Channels...", "c1=3D-mask c2=3D-mask c3=3D-mask c4=3D-mask c5=3D-mask create keep");
 rename("4D-mask");
 close("3D-mask");
 imageCalculator("Multiply create stack", ot,"4D-mask");
