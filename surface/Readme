@@ -18,8 +18,14 @@ A new tool will appear in the menu, the red circle.
    - a base delimiter is used for extraction of the base part of the analyzed image name, e.g. from the image title "StackO1_ch405/ch488/ch515", the part "StackO1" will be extracted by using "_" character.
    - select a channel, whcich will be used for a surface detection. Only one channel will analysed, the others are only used for extractio. Use channel, where a visualisation of the surface is the best.
    - specify, how many slices will be extracted as a surface layer before and after the detected surface.
-   - specify the ratio of testing window to the total image.
+   - specify the ratio of testing window to the total image, deafult ratio is 1 %.
+   - specify the tolerance for surface detection; the value is in units of intensity, if the noise-signal difference is to low, set lower value, e. g. 5
    - specify, if the default surface will be in the first image or in the last. If the very top of the object is missing, select "first".
+   - specify, if masks created during the computation may be showed
+   - specify, if also the interior space may be detected and showed (the surface detection is a default behaviour)
+   - specify, if automatic level adjustment may be aplied to output images
+   
+5) If you want to change dafault setting, edit the macro file in section after comment //CHANGE DEFAULT VALUES HERE: (~ line 29)
 
 
 NEWS
